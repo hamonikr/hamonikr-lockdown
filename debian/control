@@ -1,0 +1,13 @@
+Source: hamonikr-lockdown
+Section: utils
+Priority: optional
+Maintainer: HamoniKR <pkg@hamonikr.org>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+
+Package: hamonikr-lockdown
+Architecture: all
+Depends: zenity,
+         udev
+Description: Device lock down tool for HamoniKR
+ 하모니카 리눅스의 장치 사용을 제어할 수 있는 프로그램.

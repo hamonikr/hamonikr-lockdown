@@ -1,0 +1,84 @@
+# 장치를 사용할 수 없도록 하기 위해서는 /sys$devpath/authorized 값을 0으로 변경
+# $devpath : 현재 검색된 장치의 경로
+# 
+# 차단 메시지를 보이고 싶은 경우에는 아래 내용을 추가
+# ENV{DISPLAY}=":0.0", RUN+="/usr/local/bin/usb-unauthorized"
+# 
+# 디버깅 : tail -f /tmp/usb-lockdown.log
+
+# https://usb.org/defined-class-codes
+# https://www.beyondlogic.org/usbnutshell/usb5.shtml
+# 
+# Authorizing (or not) your USB devices to connect to the system
+# https://www.kernel.org/doc/Documentation/usb/authorization.txt
+# 
+# USB 장치의 유형으로 제어를 하는 경우
+# Ref : https://usb.org/defined-class-codes
+# Ref : https://www.beyondlogic.org/usbnutshell/usb5.shtml
+
+# ALLOW all hid(keyboard, mouse) - bInterfaceClass : 03
+# ALLOW all printer - bInterfaceClass : 07
+# ALLOW all usb hub - bInterfaceClass : 09
+# ALLOW all Video device - bInterfaceClass : 0E
+
+# ATTR{removable}=="removable" 하위까지 모두 차단
+# ACTION=="add", SUBSYSTEMS=="usb", ATTR{removable}=="removable", \
+# RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 0 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'" , \
+# RUN+="/bin/bash -c 'echo \"idVendor /sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'" , \
+# RUN+="/bin/bash -c 'for i in /sys$devpath/*; [[ -f \"$i/authorized_default\" ]] && echo 0 | tee \"$i/authorized_default\" | tee -a /tmp/usb-lockdown.log'", \
+# RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized_default\" ]] && echo 0 | tee \"/sys$devpath/authorized_default\" | tee -a /tmp/usb-lockdown.log'" , \
+# RUN+="/bin/bash -c 'echo \"idVendor /sys$devpath/aauthorized_default\" | tee -a /tmp/usb-lockdown.log'" , \
+# RUN+="/bin/bash -c 'for i in /sys$devpath/*; [[ -f \"$i/authorized_default\" ]] && echo 0 | tee \"$i/authorized_default\" | tee -a /tmp/usb-lockdown.log'"
+
+
+# 특정한 제품만 허용
+# ACTION=="add", SUBSYSTEMS=="usb", ATTR{removable}=="removable", \
+# ATTR{idVendor}=="0781", ATTR{idProduct}=="5581", \
+# RUN+="/bin/bash -c 'echo \"[RULE] ALLOW idVendor 0781 : /sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'" , \
+# RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 1 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'"
+
+# Mouse - Home
+# ACTION=="add", SUBSYSTEMS=="usb", ATTR{removable}=="removable", \
+# ATTR{idVendor}=="1c4f", ATTR{idProduct}=="0034", \
+# RUN+="/bin/bash -c 'echo \"[RULE] ALLOW Mouse idVendor 1c4f : /sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'" , \
+# RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 1 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'"
+
+# DONT REMOVE !!! - Intel vPro Keyboard
+ACTION=="add", ATTR{idVendor}=="8087", ATTR{idProduct}=="002c", \
+RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 1 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'"
+
+# 모든 키보드 마우스는 허용
+ACTION=="add", SUBSYSTEMS=="usb", ENV{DEVTYPE}=="usb_interface", ATTRS{bInterfaceClass}=="03", RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 1 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'"
+# 모든 프린터 허용
+ACTION=="add", SUBSYSTEMS=="usb", ENV{DEVTYPE}=="usb_interface", ATTRS{bInterfaceClass}=="07", RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 1 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'"
+# 모든 USB HUB 허용
+ACTION=="add", SUBSYSTEMS=="usb", ENV{DEVTYPE}=="usb_interface", ATTRS{bInterfaceClass}=="09", RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 1 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'"
+
+# 주의 : 장치유형으로 차단하는 경우와 제품명으로 차단하는 경우를 동시에 사용하면 장치 설정이 나중에 값을 오버라이딩 하게 됨
+# ACTION=="add", SUBSYSTEMS=="usb", ENV{DEVTYPE}=="usb_interface", ATTRS{bInterfaceClass}=="08", \
+# RUN+="/bin/bash -c 'echo \"[RULE] DENY bInterfaceClass 08 : /sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'", \
+# RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 0 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'"
+
+
+# 모든 usb Mass storage 유형을 사용 중지 + 차단 메세지
+#ACTION=="add", SUBSYSTEMS=="usb", ENV{DEVTYPE}=="usb_interface", ATTRS{bInterfaceClass}=="08", RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 0 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'", ENV{DISPLAY}=":0.0", RUN+="/usr/local/bin/usb-unauthorized"
+
+# USB의 제조사와 제품명으로 차단 + 차단 메세지 예
+#ACTION=="add", SUBSYSTEMS=="usb", ATTR{removable}=="removable", ATTRS{idVendor}=="1d6b", ATTRS{idProduct}=="0003", RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 0 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'", ENV{DISPLAY}=":0.0", RUN+="/usr/local/bin/usb-unauthorized"
+
+# 메시지 창 없이 USB의 제조사와 제품명으로 차단
+#ACTION=="add", SUBSYSTEMS=="usb", ATTR{removable}=="removable", ATTRS{idVendor}=="1d6b", ATTRS{idProduct}=="0003", RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 0 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'"
+
+# 디버깅
+# ACTION=="add", SUBSYSTEMS=="usb", ATTR{removable}=="removable", ENV{DISPLAY}=":0.0", RUN+="/usr/local/bin/usb-debug"
+
+# debug usb mass storage only
+# ACTION=="add", SUBSYSTEMS=="usb", \
+# ENV{DEVTYPE}=="usb_interface", \
+# ATTRS{bInterfaceClass}=="08", \
+# ENV{DISPLAY}=":0.0", RUN+="/usr/local/bin/usb-debug"
+
+# 특정한 제품만 허용
+ACTION=="add", SUBSYSTEMS=="usb", ATTR{removable}=="removable", \
+ATTR{idVendor}=="0781", ATTR{idProduct}=="5581", \
+ENV{DISPLAY}=":0.0", RUN+="/usr/local/bin/allow-usb"

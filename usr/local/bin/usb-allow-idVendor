@@ -1,0 +1,28 @@
+#!/bin/bash
+sleep 2
+
+LOGFILE="/tmp/usb-lockdown.log"
+echo "=== START $0" | tee -a $LOGFILE
+echo "== Usable Global Variable Info" | tee -a $LOGFILE
+set 2>&1 | tee -a $LOGFILE
+
+echo "== Patameters from *.rules file" | tee -a $LOGFILE
+echo $1  | tee -a $LOGFILE
+
+echo "== Current Device authorized INFO " | tee -a $LOGFILE
+authorized=$(cat /sys${DEVPATH}/authorized)
+authorized_default=$(cat /sys${DEVPATH}/authorized_default)
+echo "/sys${DEVPATH}/authorized=$authorized"  | tee -a $LOGFILE
+echo "/sys${DEVPATH}/authorized_default=$authorized_default"  | tee -a $LOGFILE
+
+echo "=== ALL SUB devices DEBUG from ROOT" | tee -a $LOGFILE
+usbRoot=$(echo "/sys${DEVPATH}" | grep -Eo '.*usb[0-9]')
+find ${usbRoot} -name "authorized*" | while read aname
+do
+    # ALLOW ALL
+    echo 1 | tee $aname
+    authorized_value=$(cat $aname)
+    echo "$aname : $authorized_value"  | tee -a $LOGFILE
+done
+
+exit

@@ -1,0 +1,40 @@
+#!/bin/bash
+xcheck=`tty | cut -d '/' -f3`
+if [ $xcheck != "pts" ]; then
+    echo "Current Mode is CLI : This Program must be run under GUI" 2>&1 | tee -a $LOGFILE
+    exit
+fi
+
+LOGFILE="/tmp/usb-lockdown.log"
+echo "=== START $0" | tee -a $LOGFILE
+echo "== Usable Global Variable Info" | tee -a $LOGFILE
+set 2>&1 | tee -a $LOGFILE
+
+echo "== Patameters from *.rules file" | tee -a $LOGFILE
+echo $1  | tee -a $LOGFILE
+
+echo "== Current Device authorized INFO " | tee -a $LOGFILE
+authorized=$(cat /sys${DEVPATH}/authorized)
+authorized_default=$(cat /sys${DEVPATH}/authorized_default)
+echo "/sys${DEVPATH}/authorized=$authorized"  | tee -a $LOGFILE
+echo "/sys${DEVPATH}/authorized_default=$authorized_default"  | tee -a $LOGFILE
+
+echo "=== ALL SUB devices DEBUG from ROOT" | tee -a $LOGFILE
+usbRoot=$(echo "/sys${DEVPATH}" | grep -Eo '.*usb[0-9]')
+find ${usbRoot} -name "authorized*" | while read aname
+do
+    # echo "$aname"  | tee -a $LOGFILE
+    authorized_value=$(cat $aname)
+    echo "$aname : $authorized_value"  | tee -a $LOGFILE
+done
+
+# Real Username and UID
+RUID=$(who | awk 'FNR == 1 {print $1}')
+RUSER_UID=$(id -u ${RUID})
+if [[ "x$LANG" == "xko_KR.UTF-8" || -z $LANG ]]; then
+    sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" zenity --info --width=600 --height=300 --text "연결된 장치 정보\n\n - Name : ${DEVNAME}\n - Path : /sys${DEVPATH}\n - Type : ${DEVTYPE}\n - Driver : ${DRIVER}\n - Model : ${ID_VENDOR} ${ID_MODEL}\n - idVendor: ${ID_VENDOR_ID}\n - idProduct :${ID_MODEL_ID}\n\n - authorized location : /sys${DEVPATH}/authorized\n - authorized : ${authorized}\n - authorized_default : ${authorized_default}"
+else
+    sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" zenity --info --width=600 --height=300 --text "Device Detail\n\n - Name : ${DEVNAME}\n - Path : /sys${DEVPATH}\n - Type : ${DEVTYPE}\n - Driver : ${DRIVER}\n - Model : ${ID_VENDOR} ${ID_MODEL}\n - idVendor: ${ID_VENDOR_ID}\n - idProduct :${ID_MODEL_ID}\n\n - authorized location : /sys${DEVPATH}/authorized\n - authorized : ${authorized}\n - authorized_default : ${authorized_default}"
+fi
+
+exit
