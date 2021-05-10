@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkApplicationWindow">
+  <object class="GtkApplicationWindow" id="window1">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">시스템 장치 차단 설정</property>
     <property name="default_width">400</property>
@@ -32,7 +32,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton">
+          <object class="GtkCheckButton" id="chk1">
             <property name="label" translatable="yes">USB 저장 장치(외장 하드 디스크, USB 스틱 등)</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -48,7 +48,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton">
+          <object class="GtkCheckButton" id="chk2">
             <property name="label" translatable="yes">USB 프린터</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -64,12 +64,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton">
-            <property name="label" translatable="yes">키보드, 마우스, 조이스틱 등 입력 장치</property>
+          <object class="GtkCheckButton" id="chk3">
+            <property name="label" translatable="yes">USB 웹캠</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
-            <property name="halign">start</property>
             <property name="margin_left">10</property>
             <property name="margin_top">10</property>
             <property name="draw_indicator">True</property>
@@ -90,7 +89,7 @@
             <property name="valign">center</property>
             <property name="margin_top">5</property>
             <property name="margin_bottom">5</property>
-            <signal name="clicked" handler="do_click" swapped="no"/>
+            <signal name="clicked" handler="onButtonPressed" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>

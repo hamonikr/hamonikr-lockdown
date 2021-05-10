@@ -1,9 +1,11 @@
 # Mass Storage Type USB 장치를 모두 차단
-# ACTION=="add", SUBSYSTEMS=="usb", ENV{DEVTYPE}=="usb_interface", ATTRS{bInterfaceClass}=="08", \
-# RUN+="/bin/bash -c 'echo \"[RULE] DENY bInterfaceClass 08 : /sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'", \
-# RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 0 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'"
+ACTION=="add", SUBSYSTEMS=="usb", ENV{DEVTYPE}=="usb_interface", ATTRS{bInterfaceClass}=="08", \
+RUN+="/bin/bash -c 'echo \"[RULE] DENY bInterfaceClass 08 : /sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'", \
+RUN+="/bin/bash -c '[[ -f \"/sys$devpath/authorized\" ]] && echo 0 | tee \"/sys$devpath/authorized\" | tee -a /tmp/usb-lockdown.log'"
 
 # ACTION=="add", SUBSYSTEMS=="usb", ATTR{removable}=="removable", 
 # RUN+="/usr/local/bin/usb-allow"
 # ACTION=="add", SUBSYSTEMS=="usb", ENV{DEVTYPE}=="usb_interface", ATTRS{bInterfaceClass}=="08", \
 # RUN+="/usr/local/bin/usb-deny"
+
+

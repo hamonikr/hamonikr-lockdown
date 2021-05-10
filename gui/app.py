@@ -1,57 +1,73 @@
 #!/usr/bin/python3
+# 
+# This program must be run as root
 
 import gi
-
+import os
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
+user = os.getenv("SUDO_USER")
+if user is None:
+    print("This program need 'sudo'")
+    exit()
 
-class MyWindow(Gtk.Window):
-    def __init__(self):
-        Gtk.Window.__init__(self, title="Hello World")
+def on_checkbutton_toggled(button, name):
+    if button.get_active():
+        state = "Active"
+    else:
+        state = "Inactive"
+    print("Common handler: Checkbutton " + name + " toggled, state is " + state + " Label : " + button.get_label() + " Name : " + name )
 
-        self.set_title("Device lockdown")
-        self.set_default_size(450, 200)
+class Handler:
+    def onButtonPressed(self, button):
+        os.system("rm -f /etc/udev/rules.d/50-usb-lockdown.rules")
+        if checkb1.get_active():
+            usb_mass_storage = "lockdown"
+            with open("/etc/udev/rules.d/50-usb-lockdown.rules", "a") as rulefile:
+                rulefile.write('ACTION=="add", SUBSYSTEMS=="usb", ENV{DEVTYPE}=="usb_interface", ATTRS{bInterfaceClass}=="08", RUN+="/bin/bash -c \'[[ -f \\\"/sys$devpath/authorized\\\" ]] && echo 0 | tee \\\"/sys$devpath/authorized\\\" | tee -a /tmp/usb-lockdown.log\'"\r\n')
+                rulefile.close()
+        else: 
+            usb_mass_storage = ""
 
-        vbox = Gtk.VBox()
-        self.btn1 = Gtk.CheckButton(label="USB 저장장치")
-        self.btn1.connect("toggled", self.on_checked)
-        self.btn2 = Gtk.CheckButton(label="프린터")
-        self.btn2.connect("toggled", self.on_checked)
-        self.btn3 = Gtk.CheckButton(label="키보드/마우스 등 입력장치")
-        self.btn3.connect("toggled", self.on_checked)
-                
-        self.lbl = Gtk.Label()
+        if checkb2.get_active():
+            usb_printer = "lockdown"            
+            with open("/etc/udev/rules.d/50-usb-lockdown.rules", "a") as rulefile:
+                rulefile.write('ACTION=="add", SUBSYSTEMS=="usb", ENV{DEVTYPE}=="usb_interface", ATTRS{bInterfaceClass}=="07", RUN+="/bin/bash -c \'[[ -f \\\"/sys$devpath/authorized\\\" ]] && echo 0 | tee \\\"/sys$devpath/authorized\\\" | tee -a /tmp/usb-lockdown.log\'"\r\n')
+                rulefile.close()            
+        else:
+            usb_printer = ""            
 
-        self.btn10 = Gtk.Button(label="OK")
-        self.btn10.connect("clicked", self.on_button_clicked)
+        if checkb3.get_active():
+            usb_hid = "lockdown"
+            with open("/etc/udev/rules.d/50-usb-lockdown.rules", "a") as rulefile:
+                rulefile.write('ACTION=="add", SUBSYSTEMS=="usb", ENV{DEVTYPE}=="usb_interface", ATTRS{bInterfaceClass}=="0e", RUN+="/bin/bash -c \'[[ -f \\\"/sys$devpath/authorized\\\" ]] && echo 0 | tee \\\"/sys$devpath/authorized\\\" | tee -a /tmp/usb-lockdown.log\'"\r\n')
+                rulefile.close()            
+        else:
+            usb_hid = ""
 
-        vbox.add(self.btn1)
-        vbox.add(self.btn2)
-        vbox.add(self.btn3)
-        vbox.add(self.lbl)
-        vbox.add(self.btn10)
-
-        self.add(vbox)
-        self.connect("destroy", Gtk.main_quit)
-        self.show_all()
-
-    def on_button_clicked(self, widget):
-        print("Selected Element : \r\n")
-        if self.btn1.get_active():
-            print("usb-storage")
-        if self.btn2.get_active():
-            print("printer")
-        if self.btn3.get_active():
-            print("keyboard-mouse")
-        # TO-DO : Save config and restart udev 
-
-    def on_checked(self, widget, data = None):
-        state = "btn1 : "+str(self.btn1.get_active())+" / btn2 : "+str(self.btn2.get_active())+" / btn3 : "+str(self.btn3.get_active())
-        self.lbl.set_text(state)
+        # Do somethings here
+        print("usb_mass_storage : " + usb_mass_storage + " usb_printer : " + usb_printer + " usb_hid : " + usb_hid )
+        os.system("sudo systemctl restart udev")
 
 
-win = MyWindow()
-win.connect("destroy", Gtk.main_quit)
-win.show_all()
+builder = Gtk.Builder()
+builder.add_from_file("gui/main.glade")
+builder.connect_signals(Handler())
+
+window = builder.get_object("window1")
+
+checkb1 = builder.get_object("chk1")
+checkb2 = builder.get_object("chk2")
+checkb3 = builder.get_object("chk3")
+
+checkb1.connect ("toggled", on_checkbutton_toggled, "usb-mass-storage")
+checkb2.connect ("toggled", on_checkbutton_toggled, "usb-printer")
+checkb3.connect ("toggled", on_checkbutton_toggled, "usb-hid")
+
+window.connect("destroy", Gtk.main_quit)
+
+
+window.show_all()
+
 Gtk.main()
