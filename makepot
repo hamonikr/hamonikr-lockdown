@@ -1,0 +1,7 @@
+#!/bin/bash
+intltool-extract --type=gettext/glade gui/main.glade
+
+xml2po -o hamonikr-lockdown.pot -m mallard gui/main.glade
+
+xgettext --language=Python --keyword=_ --keyword=N_ --output=hamonikr-lockdown.pot --join-existing gui/*.py gui/*.glade.h
+rm -f gui/*.glade.h

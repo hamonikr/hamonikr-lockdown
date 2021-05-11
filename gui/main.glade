@@ -4,7 +4,7 @@
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkApplicationWindow" id="window1">
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">시스템 장치 차단 설정</property>
+    <property name="title" translatable="yes">Device Lockdown</property>
     <property name="default_width">400</property>
     <property name="default_height">230</property>
     <property name="icon">lockdown.png</property>
@@ -23,7 +23,7 @@
             <property name="can_focus">False</property>
             <property name="margin_top">20</property>
             <property name="margin_bottom">20</property>
-            <property name="label" translatable="yes">아래 목록에서 차단할 장치를 선택하세요.</property>
+            <property name="label" translatable="yes">Select the device you want to block from the list below.</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -33,7 +33,7 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="chk1">
-            <property name="label" translatable="yes">USB 저장 장치(외장 하드 디스크, USB 스틱 등)</property>
+            <property name="label" translatable="yes">USB storage device (external hard disk, USB stick, etc.)</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -49,7 +49,7 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="chk2">
-            <property name="label" translatable="yes">USB 프린터</property>
+            <property name="label" translatable="yes">USB Printer</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -65,7 +65,7 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="chk3">
-            <property name="label" translatable="yes">USB 웹캠</property>
+            <property name="label" translatable="yes">USB Camera</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>

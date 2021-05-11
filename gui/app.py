@@ -4,13 +4,23 @@
 
 import gi
 import os
+import locale
+import gettext
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
+
+# i18n
+APP = 'hamonikr-lockdown'
+LOCALE_DIR = "/usr/share/locale"
+locale.bindtextdomain(APP, LOCALE_DIR)
+gettext.bindtextdomain(APP, LOCALE_DIR)
+gettext.textdomain(APP)
+_ = gettext.gettext
 
 user = os.getenv("SUDO_USER")
 if user is None:
     print("This program need 'sudo'")
-    exit()
+    # exit()
 
 def on_checkbutton_toggled(button, name):
     if button.get_active():
@@ -54,7 +64,7 @@ class Handler:
 builder = Gtk.Builder()
 builder.add_from_file("gui/main.glade")
 builder.connect_signals(Handler())
-
+builder.set_translation_domain(APP)
 window = builder.get_object("window1")
 
 checkb1 = builder.get_object("chk1")

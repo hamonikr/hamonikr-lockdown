@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-05-11 11:28+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: gui/main.glade:6(property) gui/main.glade:17(property)
+#: gui/main.glade:23(property) gui/main.glade:29(property)
+#: gui/main.glade:39(property) gui/main.glade:45(property)
+#: gui/main.glade:55(property) gui/main.glade:61(property)
+#: gui/main.glade:71(property) gui/main.glade:77(property)
+#: gui/main.glade:95(property)
+msgid "False"
+msgstr ""
+
+#: gui/main.glade:7(property) gui/main.glade.h:1
+msgid "Device Lockdown"
+msgstr "시스템 장치 차단 설정"
+
+#: gui/main.glade:8(property)
+msgid "400"
+msgstr ""
+
+#: gui/main.glade:9(property)
+msgid "230"
+msgstr ""
+
+#: gui/main.glade:10(property)
+msgid "lockdown.png"
+msgstr ""
+
+#: gui/main.glade:16(property) gui/main.glade:22(property)
+#: gui/main.glade:30(property) gui/main.glade:37(property)
+#: gui/main.glade:38(property) gui/main.glade:42(property)
+#: gui/main.glade:46(property) gui/main.glade:53(property)
+#: gui/main.glade:54(property) gui/main.glade:58(property)
+#: gui/main.glade:62(property) gui/main.glade:69(property)
+#: gui/main.glade:70(property) gui/main.glade:74(property)
+#: gui/main.glade:78(property) gui/main.glade:85(property)
+#: gui/main.glade:86(property) gui/main.glade:87(property)
+#: gui/main.glade:96(property)
+msgid "True"
+msgstr ""
+
+#: gui/main.glade:18(property)
+msgid "vertical"
+msgstr ""
+
+#: gui/main.glade:19(property) gui/main.glade:63(property)
+msgid "2"
+msgstr ""
+
+#: gui/main.glade:24(property) gui/main.glade:25(property)
+msgid "20"
+msgstr ""
+
+#: gui/main.glade:26(property) gui/main.glade.h:2
+msgid "Select the device you want to block from the list below."
+msgstr "아래 목록에서 차단할 장치를 선택하세요."
+
+#: gui/main.glade:31(property)
+msgid "0"
+msgstr ""
+
+#: gui/main.glade:36(property) gui/main.glade.h:3
+msgid "USB storage device (external hard disk, USB stick, etc.)"
+msgstr "USB 저장 장치(외장 하드 디스크, USB 스틱 등)"
+
+#: gui/main.glade:40(property) gui/main.glade:41(property)
+#: gui/main.glade:56(property) gui/main.glade:57(property)
+#: gui/main.glade:72(property) gui/main.glade:73(property)
+msgid "10"
+msgstr ""
+
+#: gui/main.glade:47(property)
+msgid "1"
+msgstr ""
+
+#: gui/main.glade:52(property) gui/main.glade.h:4
+msgid "USB Printer"
+msgstr "USB 연결 프린터"
+
+#: gui/main.glade:68(property) gui/main.glade.h:5
+msgid "USB Camera"
+msgstr "USB 카메라(웹캠)"
+
+#: gui/main.glade:79(property)
+msgid "3"
+msgstr ""
+
+#: gui/main.glade:84(property) gui/main.glade.h:6
+msgid "OK"
+msgstr "확인"
+
+#: gui/main.glade:88(property) gui/main.glade:89(property)
+msgid "center"
+msgstr ""
+
+#: gui/main.glade:90(property) gui/main.glade:91(property)
+msgid "5"
+msgstr ""
+
+#: gui/main.glade:97(property)
+msgid "4"
+msgstr ""
+
+#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2
+#: gui/main.glade:0(None)
+msgid "translator-credits"
+msgstr ""

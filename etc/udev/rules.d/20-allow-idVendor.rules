@@ -1,4 +1,4 @@
 # 특정한 제품만 허용
-ACTION=="add", SUBSYSTEMS=="usb", ATTR{removable}=="removable", \
-ATTR{idVendor}=="0781", ATTR{idProduct}=="5581", \
-ENV{DISPLAY}=":0.0", RUN+="/usr/local/bin/usb-allow-idVendor"
+# ACTION=="add", SUBSYSTEMS=="usb", ATTR{removable}=="removable", \
+# ATTR{idVendor}=="0781", ATTR{idProduct}=="5581", \
+# ENV{DISPLAY}=":0.0", RUN+="/usr/local/bin/usb-allow-idVendor"
