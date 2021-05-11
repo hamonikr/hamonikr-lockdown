@@ -17,12 +17,22 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import gi
-import os
+import os, subprocess
 import locale
 import gettext
 import ctypes, sys
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
+
+def prompt_sudo():
+    ret = 0
+    if os.geteuid() != 0:
+        msg = "[sudo] password for %u:"
+        ret = subprocess.check_call("sudo -v -p '%s'" % msg, shell=True)
+    return ret
+
+if prompt_sudo() != 0:
+    sys.exit("You need root permissions!")
 
 # i18n
 APP = 'hamonikr-lockdown'
@@ -31,11 +41,6 @@ locale.bindtextdomain(APP, LOCALE_DIR)
 gettext.bindtextdomain(APP, LOCALE_DIR)
 gettext.textdomain(APP)
 _ = gettext.gettext
-
-user = os.getenv("SUDO_USER")
-if user is None:
-    print("This program need 'sudo'")
-    exit()
 
 def on_checkbutton_toggled(button, name):
     if button.get_active():
@@ -78,7 +83,7 @@ class Handler:
 
 builder = Gtk.Builder()
 builder.set_translation_domain(APP)
-builder.add_from_file("gui/main.glade")
+builder.add_from_file("/usr/local/hamonikr-lockdown/main.glade")
 builder.connect_signals(Handler())
 window = builder.get_object("window1")
 

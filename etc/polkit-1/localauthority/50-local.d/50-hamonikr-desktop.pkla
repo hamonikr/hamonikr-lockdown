@@ -1,0 +1,6 @@
+[Require admin privilege for hamonikr-lockdown]
+Identity=unix-user:*
+Action=org.hamonikr.pkexec.hamonikr-lockdown
+ResultAny=auth_admin
+ResultInactive=auth_admin
+ResultActive=auth_admin

@@ -3,6 +3,9 @@ set -e
 
 case "$1" in
     configure)
+        update-desktop-database /usr/share/applications
+        gtk-update-icon-cache
+            
         touch /tmp/usb-lockdown.log
         systemctl restart udev
     ;;
