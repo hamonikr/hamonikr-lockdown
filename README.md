@@ -2,6 +2,8 @@
 
 허가되지 않은 USB의 사용을 막는 프로그램입니다.
 
+![app](./img/app.png)
+
 # Developer
 
 HamoniKR Team <pkg@hamonikr.org>
