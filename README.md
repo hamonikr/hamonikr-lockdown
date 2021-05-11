@@ -19,11 +19,15 @@ sudo apt install hamonikr-lockdown
 # 사용법
 
 아래 두 파일에 장치 제어 설정이 있습니다.
-자신의 상황에 맞게 수정 후 사용하면 됩니다.
+* 20-allow-idVendor.rules.EXAMPLE
+* 30-usb-lockdown.rules.EXAMPLE
+
+다음과 같이 복사한 후 `20-allow-idVendor.rules` 파일과 `30-usb-lockdown.rules` 파일을 자신의 상황에 맞게 수정 후 사용하면 됩니다.
 
 ```
-/etc/udev/rules.d/30-usb-lockdown.rules
-/etc/udev/rules.d/40-allow-idVendor.rules
+sudo cp /etc/udev/rules.d/20-allow-idVendor.rules.EXAMPLE /etc/udev/rules.d/20-allow-idVendor.rules
+sudo cp /etc/udev/rules.d/30-usb-lockdown.rules.EXAMPLE /etc/udev/rules.d/30-usb-lockdown.rules
+
 ```
 
 자신의 usb의 정보를 알기 위해서는 해당 장치를 컴퓨터에 삽입한 후 lsusb 명령을 이용하세요.

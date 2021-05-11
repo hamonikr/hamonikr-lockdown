@@ -1,11 +1,26 @@
 #!/usr/bin/python3
 # 
-# This program must be run as root
+# hamonikr-lockdown
+# Copyright (C) 2021 Kevin Kim <chaeya@gmail.com>
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import gi
 import os
 import locale
 import gettext
+import ctypes, sys
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
@@ -20,7 +35,7 @@ _ = gettext.gettext
 user = os.getenv("SUDO_USER")
 if user is None:
     print("This program need 'sudo'")
-    # exit()
+    exit()
 
 def on_checkbutton_toggled(button, name):
     if button.get_active():
@@ -62,9 +77,9 @@ class Handler:
 
 
 builder = Gtk.Builder()
+builder.set_translation_domain(APP)
 builder.add_from_file("gui/main.glade")
 builder.connect_signals(Handler())
-builder.set_translation_domain(APP)
 window = builder.get_object("window1")
 
 checkb1 = builder.get_object("chk1")
@@ -76,7 +91,6 @@ checkb2.connect ("toggled", on_checkbutton_toggled, "usb-printer")
 checkb3.connect ("toggled", on_checkbutton_toggled, "usb-hid")
 
 window.connect("destroy", Gtk.main_quit)
-
 
 window.show_all()
 
