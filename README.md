@@ -49,16 +49,16 @@ $devpath : 현재 검색된 장치의 경로
 ENV{DISPLAY}=":0.0", RUN+="/usr/local/bin/usb-unauthorized"
 
 ## Refrences
-https://usb.org/defined-class-codes
-https://www.beyondlogic.org/usbnutshell/usb5.shtml
+* https://usb.org/defined-class-codes
+* https://www.beyondlogic.org/usbnutshell/usb5.shtml
  
-Authorizing (or not) your USB devices to connect to the system
-https://www.kernel.org/doc/Documentation/usb/authorization.txt
+* Authorizing (or not) your USB devices to connect to the system
+* https://www.kernel.org/doc/Documentation/usb/authorization.txt
  
 ## USB 장치의 유형으로 제어를 하는 경우
 
-Ref : https://usb.org/defined-class-codes
-Ref : https://www.beyondlogic.org/usbnutshell/usb5.shtml
+* Ref : https://usb.org/defined-class-codes
+* Ref : https://www.beyondlogic.org/usbnutshell/usb5.shtml
 
 ALLOW all hid(keyboard, mouse) - bInterfaceClass : 03
 ALLOW all printer - bInterfaceClass : 07
