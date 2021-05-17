@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkApplicationWindow" id="window1">
     <property name="can_focus">False</property>
+    <signal name="delete_event" handler="onDelete" swapped="no"/>
     <property name="title" translatable="yes">Device Lockdown</property>
     <property name="default_width">400</property>
     <property name="default_height">230</property>
