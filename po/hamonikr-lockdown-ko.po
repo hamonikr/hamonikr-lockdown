@@ -118,6 +118,10 @@ msgstr ""
 msgid "4"
 msgstr ""
 
+#: gui/app.py:89(property) gui/app.py:106(property)
+msgid "Do you want to apply the changes?"
+msgstr "변경한 설정을 적용하시겠습니까?"
+
 #. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2
 #: gui/main.glade:0(None)
 msgid "translator-credits"
